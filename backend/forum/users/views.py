@@ -23,6 +23,22 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
-## clase que apunta el ednpoint de login
+## clase que apunta el endpoint de login
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+## registro de usuarios
+@api_view(['POST'])
+def register(request):
+    data = request.data
+    try:
+        user = User.objects.create(
+            user_name = data['user_name'],
+            email = data['email'],
+            password = make_password(data['password'])
+        )
+        serializers = UserSerializerWithToken(user, many=False)
+        return Response(serializers.data)
+    except:
+        message = {'detail': 'Something went wrong'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
