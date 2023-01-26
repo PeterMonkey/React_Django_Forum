@@ -27,6 +27,7 @@ def getBlogById(request, pk):
     return Response(serializer.data)
 
 
+## crear blog
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def postBlog(request):
@@ -36,4 +37,20 @@ def postBlog(request):
         body = data['body'],
     )
     serializer = BlogSerializer(blog, many=False)
+    return Response(serializer.data)
+
+
+## actualizar blog
+@api_view(['put'])
+@permission_classes([IsAuthenticated])
+def updateBlog(request, pk):
+    data = request.data
+    blog = Blog.objects.get(id=pk)
+    serializer = BlogSerializer(instance=blog, data= data)
+    # verificar que el usuario logueado es el que actualiza
+    if blog.user == request.user:
+        if serializer.is_valid():
+            serializer.save()
+    else:
+        return Response({'Error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     return Response(serializer.data)
