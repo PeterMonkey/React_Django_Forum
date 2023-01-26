@@ -9,7 +9,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import User
-from .serializers import UserSerializerWithToken
+from .serializers import UserSerializer, UserSerializerWithToken
 
 ## Obtener el Token
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -68,3 +68,19 @@ def uploadImage(request):
     user.image = request.FILES.get('image')
     user.save()
     return Response('Imagen subida')
+
+## obtener usuario
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserProfile(request):
+    user = request.user
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+## obtener un solo usuario
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOneUser(request, pk):
+    user = User.objects.get(id=pk)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
