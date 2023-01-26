@@ -6,4 +6,5 @@ urlpatterns = [
     path('register/', views.register),
     path('update/', views.putUser),
     path('image/', views.uploadImage),
+    path('userProfile/', views.getUserProfile)
 ]
