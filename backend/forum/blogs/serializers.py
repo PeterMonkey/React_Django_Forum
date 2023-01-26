@@ -18,7 +18,7 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = '__all__'
 
-    def get_commnents(self, obj):
+    def get_comments(self, obj):
         comments = obj.comment_set.all()
         serializer = CommentSerializer(comments, many=True)
         return serializer.data
