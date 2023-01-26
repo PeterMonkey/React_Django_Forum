@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
+    path('blogs/', include('blogs.urls')),
 ]
 
 ## Ruta de archivos estaticos

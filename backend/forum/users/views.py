@@ -69,7 +69,7 @@ def uploadImage(request):
     user.save()
     return Response('Imagen subida')
 
-## obtener usuario
+## obtener usuario logeado
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):
@@ -90,5 +90,5 @@ def getOneUser(request, pk):
 @permission_classes([IsAuthenticated])
 def getUsers(request):
     users = User.objects.all()
-    serializer = UserSerializer(users, many=False)
+    serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
