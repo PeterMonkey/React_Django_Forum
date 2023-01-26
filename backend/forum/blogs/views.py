@@ -57,12 +57,31 @@ def updateBlog(request, pk):
 
 
 ## borrar un blog
-@api_view(['PUT'])
+@api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteBlog(request, pk):
     blog = Blog.objects.get(id=pk)
     if blog.user == request.user:
         blog.delete()
+        return Response('blog eliminado')
     else:
         return Response({'Error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)  
     
+
+## crear un comentario
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createComment(request, pk):
+    # obtenemos la publicacion en la que queremos comentar
+    blog = Blog.objects.get(id=pk)
+    user = request.user
+    data = request.data
+    # creamos el comentario
+    comment = Comment.objects.create(
+        user = user,
+        blog = blog,
+        text = data['text']
+    )
+    comments = blog.comment_set.all()
+    blog.save()
+    return Response('comment!!')
