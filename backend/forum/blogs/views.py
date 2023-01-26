@@ -17,3 +17,11 @@ def getBlogs(request):
     blog = Blog.objects.filter().order_by('-date')
     serializer = BlogSerializer(blog, many=True)
     return Response(serializer.data)
+
+## obtener blog por id
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getBlogById(request, pk):
+    blog = Blog.objects.get(id=pk)
+    serializer = BlogSerializer(blog, many=False)
+    return Response(serializer.data)
