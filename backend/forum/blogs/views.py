@@ -41,7 +41,7 @@ def postBlog(request):
 
 
 ## actualizar blog
-@api_view(['put'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateBlog(request, pk):
     data = request.data
@@ -54,3 +54,15 @@ def updateBlog(request, pk):
     else:
         return Response({'Error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
     return Response(serializer.data)
+
+
+## borrar un blog
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def deleteBlog(request, pk):
+    blog = Blog.objects.get(id=pk)
+    if blog.user == request.user:
+        blog.delete()
+    else:
+        return Response({'Error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)  
+    

@@ -6,4 +6,5 @@ urlpatterns = [
     path('get/<int:pk>/', views.getBlogById),
     path('post/', views.postBlog),
     path('update/<int:pk>/', views.updateBlog),
+    path('delete/int:pk>/', views.deleteBlog),
 ]
